@@ -19,11 +19,11 @@ if(!fs.existsSync(dataFile))
 }
 
 const todo  = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
-
 const minX  = 0;
 const minY  = 1;
 let maxY    = todo.length;
 let addMode = false;
+const noTasks = "NO TASKS. PRESS + KEY TO ADD";
 
 readline.emitKeypressEvents(process.stdin);
 
@@ -43,7 +43,7 @@ function printToDoList(list)
 {
     list.forEach(element => 
     {
-      printIt(`[${element.done ? "X" : " " }] ${element.task}\n`);
+      printIt(`[${element.done ? '\u2713' : " " }] ${element.task}\n`);
     });
 }
 
@@ -63,7 +63,7 @@ if(todo.length > 0)
 }
 else
 {
-  printIt("NO TASKS. PRESS + KEY TO ADD");
+  printIt(noTasks);
 }
 
 function consoleMessage(message,callback)
@@ -121,7 +121,7 @@ process.stdin.on('keypress', (str, key) =>
     if(!todo.length > 0)
     {
       refreshAndPrintList();
-      printIt("NO TASKS. PRESS + KEY TO ADD");
+      printIt(noTasks);
     }
     else
     {
