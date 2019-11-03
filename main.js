@@ -6,7 +6,10 @@ const dataFile    = "todo.json";
 const cursor = 
 {
     x : 0,
-    y : 1
+    y : 1,
+    getTodoElement: function(){
+      return this.y - 1;
+    }
 };
 
 if(!fs.existsSync(dataFile))
@@ -67,17 +70,25 @@ function consoleMessage(message,callback)
 {
     readline.cursorTo(process.stdin, 0, 0, function()
     {
-        printIt(`TODO> ${message}               \r`);
+        readline.clearLine(process.stdin);
+        printIt(`> ${message}`);
         callback();
     }); 
 }
 
 var addStore = [];
 
+/**
+ * The application flow is directed by 
+ * user key entry, so all of the logic is here. 
+ */
 process.stdin.on('keypress', (str, key) => 
-{ 
-  let printScreen = true;
-
+{
+  /**
+   * If the user selects add mode, 
+   * then this is what is executed so that the
+   * user input can be added as a todo item.
+   */
   if(addMode && key.name !== "return")
   {
       if(key.name !== "backspace")
@@ -93,7 +104,7 @@ process.stdin.on('keypress', (str, key) =>
       printIt(addStore.join(""));
       readline.cursorTo(process.stdin, addStore.length, cursor.y);
       return;
-  }
+  }//if Return is entered in addmode, we assume user is done inputing data.
   else if(addMode && key.name === "return")
   {
     todo.push({task: addStore.join(""),done: false});
@@ -104,9 +115,9 @@ process.stdin.on('keypress', (str, key) =>
     saveList(todo);
     return;
   }
-  else if(str === "-")
+  else if(str === "-" && todo[ cursor.getTodoElement() ])
   {
-    todo.splice(cursor.y - 1,1);
+    todo.splice(cursor.getTodoElement(),1);
     if(!todo.length > 0)
     {
       refreshAndPrintList();
@@ -116,6 +127,7 @@ process.stdin.on('keypress', (str, key) =>
     {
       refreshAndPrintList();
     }
+
     maxY = todo.length;
     saveList(todo);
     return;
@@ -151,18 +163,20 @@ process.stdin.on('keypress', (str, key) =>
     });
     return;
   }
-  else if(key.name === "x" && cursor.x === 1 && todo[cursor.y - 1])
+  else if(key.name === "x" && cursor.x === 1 && todo[ cursor.getTodoElement() ])
   {
-    todo[cursor.y - 1].done = !todo[cursor.y - 1].done;
-    printScreen = false;
+    todo[ cursor.getTodoElement() ].done = !todo[ cursor.getTodoElement() ].done;
     saveList(todo);
     refreshAndPrintList();
+    return;
   }
-  if(printScreen && todo[cursor.y - 1])
+
+  if(todo[ cursor.getTodoElement() ])
   {
-    consoleMessage(`TASK: ${todo[cursor.y - 1].task} | Commands: "+" - Add task, "-" remove task, "x" mark task done        `,function()
+    consoleMessage(`TASK: "${todo[ cursor.getTodoElement() ].task}", "+" Add, "-" Remove, "x" Done`,function()
     {
         readline.cursorTo(process.stdin, cursor.x, cursor.y);
     });
   }
+
 });
