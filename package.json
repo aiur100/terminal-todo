@@ -1,0 +1,15 @@
+{
+  "name": "my-todo",
+  "version": "1.0.0",
+  "description": "A todo list application",
+  "main": "main.js",
+  "scripts": {
+    "test": "lol no testing, breh."
+  },
+  "keywords": [
+    "emma",
+    "munga"
+  ],
+  "author": "Christopher Hill",
+  "license": "MIT"
+}
