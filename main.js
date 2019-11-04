@@ -91,6 +91,11 @@ process.stdin.on('keypress', (str, key) =>
    */
   if(addMode && key.name !== "return")
   {
+      if(process.stdout.columns - 5 <= addStore.length)
+      {
+        return; 
+      }
+
       if(key.name !== "backspace")
       {
         addStore.push(str);
@@ -108,10 +113,10 @@ process.stdin.on('keypress', (str, key) =>
   else if(addMode && key.name === "return")
   {
     todo.push({task: addStore.join(""),done: false});
-    addStore = [];
-    addMode = false;
+    addStore  = [];
+    addMode   = false;
     refreshAndPrintList();
-    maxY = todo.length;
+    maxY      = todo.length;
     saveList(todo);
     return;
   }
@@ -173,7 +178,7 @@ process.stdin.on('keypress', (str, key) =>
 
   if(todo[ cursor.getTodoElement() ])
   {
-    consoleMessage(`TASK: "${todo[ cursor.getTodoElement() ].task}", "+" Add, "-" Remove, "x" Done`,function()
+    consoleMessage(`"+" Add, "-" Remove, "x" Done`,function()
     {
         readline.cursorTo(process.stdin, cursor.x, cursor.y);
     });
