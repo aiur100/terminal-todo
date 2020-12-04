@@ -1,6 +1,7 @@
-const readline    = require('readline');
-const fs          = require('fs');
-const dataFile    = "todo.json";
+const readline = require('readline');
+const fs  = require('fs');
+const USER_PATH = process.env.HOME+"/.terminal-todo";
+const dataFile = USER_PATH+"/todo.json";
 
 
 const cursor = 
@@ -36,6 +37,9 @@ const printIt = function (message)
 
 function saveList(list)
 {
+  if(!fs.existsSync(USER_PATH)){
+    fs.mkdirSync(USER_PATH);
+  }
   fs.writeFileSync(dataFile, JSON.stringify(list,null,2));
 }
 
