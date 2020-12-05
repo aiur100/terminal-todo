@@ -1,18 +1,15 @@
 # TERMINAL TODO
+A super simple todo list manager for your terminal.
+A json file is stored in your home directory in `~/.terminal-todo/todo.json`.
 
-**Author:** Christopher R. Hill
+## Requirements
+---
+* NodeJS 12.x 
+* MacOS
 
-This project is sloppy and all functions and logic exist in main.js. 
-
-I just wanted my own todo app that I could manage in my terminal, so I made this. 
-
-----
-
-# Usage 
-
-* Obviously, but here: 
-
-    * ```node main.js```
+## Usage 
+---
+* ```node main.js```
 * Use arrow keys to move between todo items.
 * Press "+" key to add an item 
 * Press "-" key to remove an item
